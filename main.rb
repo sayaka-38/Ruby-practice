@@ -85,14 +85,23 @@ class Monster
     end
     puts "#{@name}の攻撃！"
 
-    damage = @offense - brave.defense
-    brave.hp -= damage
+    damage = calculate_damage(brave)
+    cause_damage(damage: damage, target: brave)
 
-    puts "#{brave.name}は#{damage}のダメージを受けた！"
     puts "#{brave.name}の残りHPは#{brave.hp}だ"
   end
 
   private
+
+    damage = @offense - brave.defense
+  end
+
+  def cause_damage(**params)
+    damage = params[:damage]
+    target = params[:target]
+    target.hp -= damage
+    puts "#{target.name}は#{damage}のダメージを受けた！"
+  end
 
   def transform
     transform_name = "ドラゴン"
