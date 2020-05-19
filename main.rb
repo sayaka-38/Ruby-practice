@@ -14,20 +14,44 @@ class Brave
 
   def attack(monster)
     puts "#{name}の攻撃！"
-    
+
+    attack_type = decision_attack_type
+    damage = calculate_damage(target: monster, attack_type: attack_type)
+    cause_damage(target: monster, damage: damage)
+
+    puts "#{monster.name}の残り体力は#{monster.hp}だ"
+  end
+
+  private
+
+  def decision_attack_type
     attack_num = rand(4)
     if attack_num == 0
       puts "急所に当たった！"
-      damege = calculate_special_attack - monster.defense
+      "special_attack"
     else
       puts "通常攻撃"
-      damege = @offense - monster.defense
+      "nomal_attack"
     end
-    
-    monster.hp -= damege
+  end
 
-    puts "#{monster.name}は#{damege}のダメージを受けた"
-    puts "#{monster.name}の残り体力は#{monster.hp}だ"
+  def calculate_damage(**params)
+    target = params[:target]
+    attack_type = params[:attack_type]
+
+    if attack_type == "special_attack"
+      calculate_special_attack - target.defense
+    else
+      @offense - target.defense
+    end
+  end
+
+  def cause_damage(**params)
+    target = params[:target]
+    damage = params[:damage]
+
+    target.hp -= damage
+    puts "#{target.name}は#{damage}のダメージを受けた"
   end
 
   def calculate_special_attack
@@ -61,10 +85,10 @@ class Monster
     end
     puts "#{@name}の攻撃！"
 
-    damege = @offense - brave.defense
-    brave.hp -= damege
+    damage = @offense - brave.defense
+    brave.hp -= damage
 
-    puts "#{brave.name}は#{damege}のダメージを受けた！"
+    puts "#{brave.name}は#{damage}のダメージを受けた！"
     puts "#{brave.name}の残りHPは#{brave.hp}だ"
   end
 
