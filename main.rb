@@ -93,6 +93,7 @@ class Monster
 
   private
 
+  def calculate_damage(brave)
     damage = @offense - brave.defense
   end
 
